@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var leftAmount = ""
+    @State var rightAmount = ""
+    
     var body: some View {
         ZStack {
             // background
@@ -43,9 +47,13 @@ struct ContentView: View {
                                 .font(.headline)
                                 .foregroundColor(.white)
                         }
+                        .padding(.bottom, -5)
                         
                         // text field
-                        Text("Text Field")
+                        TextField("Amount", text: $leftAmount)
+                            .padding(7)
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(7)
                         
                     }
                     // eq
@@ -68,13 +76,35 @@ struct ContentView: View {
                                 .font(.headline)
                                 .foregroundColor(.white)
                         }
+                        .padding(.bottom, -5)
                         
                         // text field
-                        Text("Text Field")
+                        TextField("Amount", text: $rightAmount)
+                            .padding(7)
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(7)
+                            .multilineTextAlignment(.trailing)
                     }
                 }
+                .padding()
+                .background(.black.opacity(0.5))
+                .cornerRadius(15)
+                
+                Spacer()
+                
                 
                 // info button
+                HStack {
+                    Spacer()
+
+                    Button {
+                        // display exchange info screen
+                    } label: {
+                        Image(systemName: "info.circle.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                    }
+                }
                 
                 
             }
