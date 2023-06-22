@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State var leftAmount = ""
     @State var rightAmount = ""
+    @State var leftCurrency: Currency = .silverPiece
+    @State var rightCurrency: Currency = .goldPiece
+    @State var showSelectCurrency = false
+    @State var showExchangeInfo = false
     
     var body: some View {
         ZStack {
@@ -37,24 +40,33 @@ struct ContentView: View {
                         // currency
                         HStack {
                             // currency image
-                            Image("silverpiece")
+                            Image(CurrencyImage.allCases[
+                                Currency.allCases.firstIndex(of: leftCurrency)!
+                            ].rawValue)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 33)
                             
                             // text
-                            Text("Silver Piece")
+                            Text(CurrencyText.allCases[
+                                Currency.allCases.firstIndex(of: leftCurrency)!
+                            ].rawValue)
                                 .font(.headline)
                                 .foregroundColor(.white)
                         }
                         .padding(.bottom, -5)
+                        .onTapGesture {
+                            showSelectCurrency.toggle()
+                        }
+                        .sheet(isPresented: $showSelectCurrency) {
+                            SelectCurrency(leftCurrency: $leftCurrency, rightCurrency: $rightCurrency)
+                        }
                         
                         // text field
                         TextField("Amount", text: $leftAmount)
                             .padding(7)
                             .background(Color(UIColor.systemGray6))
                             .cornerRadius(7)
-                        
                     }
                     // eq
                     Image(systemName: "equal")
@@ -66,17 +78,27 @@ struct ContentView: View {
                         // currency
                         HStack {
                             // currency image
-                            Image("goldpiece")
+                            Image(CurrencyImage.allCases[
+                                Currency.allCases.firstIndex(of: rightCurrency)!
+                            ].rawValue)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 33)
                             
                             // text
-                            Text("Gold Piece")
+                            Text(CurrencyText.allCases[
+                                Currency.allCases.firstIndex(of: rightCurrency)!
+                            ].rawValue)
                                 .font(.headline)
                                 .foregroundColor(.white)
                         }
                         .padding(.bottom, -5)
+                        .onTapGesture {
+                            showSelectCurrency.toggle()
+                        }
+                        .sheet(isPresented: $showSelectCurrency) {
+                            SelectCurrency(leftCurrency: $leftCurrency, rightCurrency: $rightCurrency)
+                        }
                         
                         // text field
                         TextField("Amount", text: $rightAmount)
@@ -92,25 +114,24 @@ struct ContentView: View {
                 
                 Spacer()
                 
-                
                 // info button
                 HStack {
                     Spacer()
 
                     Button {
-                        // display exchange info screen
+                        showExchangeInfo.toggle()
                     } label: {
                         Image(systemName: "info.circle.fill")
                             .font(.largeTitle)
                             .foregroundColor(.white)
                     }
+                    .sheet(isPresented: $showExchangeInfo) {
+                        ExchangeInfo()
+                    }
                 }
-                
-                
             }
             .padding()
         }
-
     }
 }
 
